@@ -343,19 +343,6 @@ static __strong UIImage* kNoArtWork = [[[UIImage alloc] initWithData:[NSData dat
 @end
 
 
-static UIView* getTransportButtons()
-{
-	static UIView *retV;
-	if(!retV) {
-		retV = [UIView new];
-		PlayerButtonView *controls = [[PlayerButtonView alloc] initWithFrame:CGRectMake(0,0,0,0)];
-		controls.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-		[retV addSubview:controls];
-	}
-	[retV layoutSubviews];	
-	return retV;
-}
-
 @implementation ColectionHViewController
 @synthesize collectionView, collectionIndex, rowsCount, isShowingAlbumInfo, isShowingAlbumInfoIndexPath;
 - (void)viewDidLoad
@@ -471,11 +458,7 @@ static UIView* getTransportButtons()
 	
 	
 	
-	UIView* buttons = getTransportButtons()?:[UIView new];
-	
-	buttons.frame = CGRectMake( 0, ((self.view.frame.size.height/2)-((self.view.frame.size.height/1.6)/1.6)) + (self.view.frame.size.height/1.6), (self.view.frame.size.width/2), 60);
-	buttons.tag = 96585;
-	buttons.alpha = 0;
+	// Transport buttons (previous / play-pause / next) intentionally not shown in landscape coverflow
 	
 	static __strong UINavigationController *navCon = [[UINavigationController alloc] initWithRootViewController:[[CollectionTableAViewController alloc] initWithIndex:indexPath.row]];
 	
@@ -501,9 +484,6 @@ static UIView* getTransportButtons()
 			if(UIView* oldBT = [self.view viewWithTag:76596]) {
 				oldBT.alpha = 0;
 			}
-			if(UIView* oldBT = [self.view viewWithTag:96585]) {
-				oldBT.alpha = 0;
-			}
 			return;
 		}
 		
@@ -521,10 +501,6 @@ static UIView* getTransportButtons()
 		
 		[self.view addSubview:navCon.view];
 		
-		buttons.alpha = 1.0;
-		
-		[self.view addSubview:buttons];
-		
     } completion:^(BOOL comple){
 		if(comple) {
 			if(!enableZoom) {
@@ -532,9 +508,6 @@ static UIView* getTransportButtons()
 					[oldBT removeFromSuperview];
 				}
 				if(UIView* oldBT = [self.view viewWithTag:76596]) {
-					[oldBT removeFromSuperview];
-				}
-				if(UIView* oldBT = [self.view viewWithTag:96585]) {
 					[oldBT removeFromSuperview];
 				}
 			}
@@ -659,12 +632,6 @@ __strong static CoverflowMViewController* _sharedCoverflowMViewController;
 	album.font = [UIFont systemFontOfSize:12];
 	[TapBarPlayer addSubview:album];
 	
-	UIView* buttons = getTransportButtons()?:[UIView new];
-	
-	buttons.frame = CGRectMake(30, 9, 260, 60.0);
-	
-	buttons.tag = 96585;
-	[TapBarPlayer addSubview:buttons];
 	
 	
 	
